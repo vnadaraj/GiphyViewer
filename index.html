@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<meta charset="utf-8">
+	<title>Giphy Viewer</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<div id="button-area">Placeholder area for making buttons!
+	</div>
+	<div id="giphy-area">Placeholder area to display Giphy API images!
+	</div>
+	<div id="form-area">Placeholder area to place form for user input!
+	</div>
+	
+	<script type="text/javascript">
+		// Giphy API Key = hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud
+
+		var findMe = "pig";
+		var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud&q=" + findMe + "&limit=5";
+
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		})
+		.done(function(response) {
+			console.log(response);
+		
+			var results = response.data;
+
+			for (var i = 0; i < results.length; i++) {
+
+				var rating = results[i].rating;
+				var p = $("<p>").text(i + ") Rating: " + rating);
+				var imgTag = $("<img>");
+
+				imgTag.attr("src", results[i].images.original_still.url);
+
+				var gifDiv = $("<div class='item'>")
+
+				gifDiv.append(p);
+				gifDiv.append(imgTag);
+
+				$("#giphy-area").prepend(gifDiv);
+			}
+		});
+
+	</script>
+
+</body>
+
+</html>
