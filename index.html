@@ -5,47 +5,65 @@
 	<meta charset="utf-8">
 	<title>Giphy Viewer</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 
 <body>
 
-	<div id="button-area">Placeholder area for making buttons!
+	<div id="button-area"></div>
+	<div id="form-area">Placeholder area to place form for user input!
 	</div>
 	<div id="giphy-area">Placeholder area to display Giphy API images!
-	</div>
-	<div id="form-area">Placeholder area to place form for user input!
 	</div>
 	
 	<script type="text/javascript">
 		// Giphy API Key = hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud
 
-		var findMe = "pig";
-		var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud&q=" + findMe + "&limit=5";
+		// Make a list of your own theme/topic
+		var topicArray = ["dog", "cat", "rabbit", "fish"];
 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		})
-		.done(function(response) {
-			console.log(response);
-		
-			var results = response.data;
+		for (var i1 = 0; i1 < topicArray.length; i1++) {
+			var buttonTag = $("<button id='topic-item'>");
+			buttonTag.attr("topic-item", topicArray[i1]);
+			buttonTag.text(topicArray[i1]);
+			$("#button-area").append(buttonTag);
+		}
 
-			for (var i = 0; i < results.length; i++) {
+		// Adding click event listen listener to all buttons
+		$("button").on("click", function() {
 
-				var rating = results[i].rating;
-				var p = $("<p>").text(i + ") Rating: " + rating);
-				var imgTag = $("<img>");
+			var findMe = $(this).attr("topic-item");
+			
+			// var findMe = "hamster";
+			var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud&q=" + findMe + "&limit=5";
 
-				imgTag.attr("src", results[i].images.original_still.url);
+			$.ajax({
+				url: queryURL,
+				method: "GET"
+			})
+			.done(function(response) {
+				console.log(response);
+			
+				var results = response.data;
 
-				var gifDiv = $("<div class='item'>")
+				for (var i = 0; i < results.length; i++) {
+					if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
 
-				gifDiv.append(p);
-				gifDiv.append(imgTag);
+						var rating = results[i].rating;
+						var p = $("<p>").text(i + ") Rating: " + rating);
+						var imgTag = $("<img>");
 
-				$("#giphy-area").prepend(gifDiv);
-			}
+						imgTag.attr("src", results[i].images.original_still.url);
+
+						var gifDiv = $("<div class='item'>")
+
+						gifDiv.append(p);
+						gifDiv.append(imgTag);
+
+						$("#giphy-area").prepend(gifDiv);
+					}
+				}
+			});
 		});
 
 	</script>
