@@ -33,9 +33,9 @@
 		$("button").on("click", function() {
 
 			var findMe = $(this).attr("topic-item");
-			
+
 			// var findMe = "hamster";
-			var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud&q=" + findMe + "&limit=5";
+			var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=hY1tCHo6ucNmcuoFAIdPXtpdjujP16Ud&q=" + findMe + "&limit=10";
 
 			$.ajax({
 				url: queryURL,
@@ -53,7 +53,10 @@
 						var p = $("<p>").text(i + ") Rating: " + rating);
 						var imgTag = $("<img>");
 
-						imgTag.attr("src", results[i].images.original_still.url);
+						// fixed_height_small_still (still)
+						// fixed_height_small (animation)
+						// imgTag.attr("src", results[i].images.original_still.url);
+						imgTag.attr("src", results[i].images.fixed_height_small_still.url);
 
 						var gifDiv = $("<div class='item'>")
 
